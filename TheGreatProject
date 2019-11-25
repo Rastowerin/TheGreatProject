@@ -1,0 +1,43 @@
+from tkinter import *
+
+print('укажите разрешение вашего экрана')
+
+f = True
+while f:
+
+    try:
+        x = int(input('x: '))
+        y = int(input('y: '))
+
+        if (500 > x or x > 3000) or (500 > y or y > 3000):
+            raise ValueError
+
+        f = False
+
+    except ValueError:
+        print('\nразрешение указанно некорректно')
+
+
+def rec():
+    global f, c
+    c.create_polygon((0, 0), (0, y // 2), (x, y // 2), (x, 0), width=1, fill=col[int(f)])
+    c.create_polygon((0, y // 2), (0, x), (x, y), (x, y // 2), width=1, fill=col[(int(f) + 1) % 2])
+    c.create_text(cords[int(f)], text='оп', fill='yellow', font=('Arial', x * y // 50000))
+    c.create_text(cords[int(f) + 2], text='оп', fill='blue', font=('Arial', x * y // 50000))
+    f = not f
+    w.after(500, rec)
+
+
+w = Tk()
+w.title('TheGreatProject')
+w.geometry('%sx%s' % (x, y))
+
+f = True
+col = ['yellow', 'blue']
+cords = [(x // 3, y // 10 * 7), (x // 2 + x // 3, y // 10), (x // 2, y // 3), (x // 10 * 9, y // 10 * 7)]
+c = Canvas(w, width=2520, height=1080)
+c.pack()
+
+rec()
+
+w.mainloop()
